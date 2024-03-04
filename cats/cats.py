@@ -123,6 +123,9 @@ def wpm(typed, elapsed):
     assert elapsed > 0, "Elapsed time must be positive"
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    num_words = len(typed) / 5
+    minutes = elapsed / 60
+    return num_words / minutes
     # END PROBLEM 4
 
 
