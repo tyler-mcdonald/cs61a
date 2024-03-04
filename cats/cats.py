@@ -192,7 +192,19 @@ def feline_fixes(typed, source, limit):
     5
     """
     # BEGIN PROBLEM 6
-    assert False, "Remove this line"
+
+    def num_substitutes(typed, source, diff):
+        if diff > limit:
+            return limit + 1
+        elif not typed:
+            return diff + len(source)
+        elif not source:
+            return diff + len(typed)
+
+        return num_substitutes(typed[1:], source[1:], diff + int(typed[0] != source[0]))
+
+    return num_substitutes(typed, source, 0)
+
     # END PROBLEM 6
 
 
@@ -211,23 +223,46 @@ def minimum_mewtations(typed, source, limit):
     >>> minimum_mewtations("ckiteus", "kittens", big_limit) # ckiteus -> kiteus -> kitteus -> kittens
     3
     """
-    assert False, "Remove this line"
-    if ___________:  # Base cases should go here, you may add more base cases as needed.
-        # BEGIN
-        "*** YOUR CODE HERE ***"
-        # END
-    # Recursive cases should go below here
-    if ___________:  # Feel free to remove or add additional cases
-        # BEGIN
-        "*** YOUR CODE HERE ***"
-        # END
-    else:
-        add = ...  # Fill in these lines
-        remove = ...
-        substitute = ...
-        # BEGIN
-        "*** YOUR CODE HERE ***"
-        # END
+
+    def count_mutations(typed, source, diff):
+        # More than 1 base case will be needed
+        if (
+            diff > limit
+        ):  # Base cases should go here, you may add more base cases as needed.
+            return limit + 1
+        elif not typed:
+            return diff + len(source)
+        elif not source:
+            return diff + len(typed)
+
+        # Recursive cases should go below here
+        if typed[0] == source[0]:  # Feel free to remove or add additional cases
+            return count_mutations(typed[1:], source[1:], diff)
+        else:
+            # calculate differences from each mutation
+            add = feline_fixes(source[0] + typed, source, limit)
+            remove = feline_fixes(typed[1:], source, limit)
+            substitute = feline_fixes(source[0] + typed[1:], source, limit)
+            # BEGIN
+            "*** YOUR CODE HERE ***"
+            # find the minimum
+            if add <= remove <= substitute:
+                # add
+                pass
+            elif remove <= add <= substitute:
+                # remove
+                pass
+            elif substitute <= add <= remove:
+                # sub
+                pass
+            # END
+        return diff
+
+    return count_mutations(typed, source, 0)
+
+
+big_limit = 10
+minimum_mewtations("ckiteus", "kittens", 10)
 
 
 def final_diff(typed, source, limit):
