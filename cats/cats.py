@@ -1,5 +1,6 @@
 """Typing test implementation"""
 
+from typing import Callable, List
 from utils import lower, split, remove_punctuation, lines_from_file
 from ucb import main, interact, trace
 from datetime import datetime
@@ -39,7 +40,7 @@ def pick(paragraphs, select, k):
     return ""
 
 
-def about(subject):
+def about(subject: List) -> Callable:
     """Return a select function that returns whether
     a paragraph contains one of the words in SUBJECT.
 
@@ -55,6 +56,14 @@ def about(subject):
     assert all([lower(x) == x for x in subject]), "subjects should be lowercase."
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
+
+    def select(paragraph: str) -> bool:
+        for word in paragraph.split(" "):
+            if remove_punctuation(word).lower() in subject:
+                return True
+        return False
+
+    return select
     # END PROBLEM 2
 
 
