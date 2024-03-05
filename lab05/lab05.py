@@ -1,3 +1,6 @@
+from typing import List
+
+
 def flatten(s):
     """Returns a flattened version of list s.
 
@@ -26,6 +29,17 @@ def flatten(s):
     """
     "*** YOUR CODE HERE ***"
 
+    def recursive_flatten(lst, prefix: List = []):
+        if not lst:
+            return prefix
+        elif type(lst[0]) == int:
+            prefix.append(lst[0])
+        else:
+            recursive_flatten(lst[0], prefix)
+        return recursive_flatten(lst[1:], prefix)
+
+    return recursive_flatten(s)
+
 
 def my_map(fn, seq):
     """Applies fn onto each element in seq and returns a list.
@@ -39,7 +53,7 @@ def my_map(fn, seq):
     2023
     [None, None, None]
     """
-    return ______
+    return [fn(x) for x in seq]
 
 
 def my_filter(pred, seq):
@@ -58,7 +72,7 @@ def my_filter(pred, seq):
     >>> my_filter(lambda x: max(5, x) == 5, [1, 2, 3, 4, 5, 6, 7])
     [1, 2, 3, 4, 5]
     """
-    return ______
+    return [x for x in seq if pred(x)]
 
 
 def my_reduce(combiner, seq):
@@ -73,7 +87,10 @@ def my_reduce(combiner, seq):
     >>> my_reduce(lambda x, y: x + 2 * y, [1, 2, 3]) # (1 + 2 * 2) + 2 * 3
     11
     """
-    "*** YOUR CODE HERE ***"
+    reduced = seq[0]
+    for i in range(1, len(seq)):
+        reduced = combiner(reduced, seq[i])
+    return reduced
 
 
 def my_map_syntax_check():
@@ -113,6 +130,9 @@ def distance(city_a, city_b):
     5.0
     """
     "*** YOUR CODE HERE ***"
+    lat_a, lon_a = get_lat(city_a), get_lon(city_a)
+    lat_b, lon_b = get_lat(city_b), get_lon(city_b)
+    return sqrt((lat_a - lat_b) ** 2 + (lon_a - lon_b) ** 2)
 
 
 def closer_city(lat, lon, city_a, city_b):
@@ -131,6 +151,12 @@ def closer_city(lat, lon, city_a, city_b):
     'Bucharest'
     """
     "*** YOUR CODE HERE ***"
+    new_city = make_city("", lat, lon)
+    return (
+        get_name(city_a)
+        if distance(new_city, city_a) < distance(new_city, city_b)
+        else get_name(city_b)
+    )
 
 
 def check_city_abstraction():
@@ -155,6 +181,7 @@ def check_city_abstraction():
     'Bucharest'
     >>> change_abstraction(False)
     """
+
 
 # Treat all the following code as being behind an abstraction layer,
 # you shouldn't need to look at it.
@@ -211,7 +238,9 @@ def get_lon(city):
     else:
         return city[2]
 
+
 ###############
+from functools import reduce
 
 
 def count_palindromes(L):
@@ -221,7 +250,10 @@ def count_palindromes(L):
     >>> count_palindromes(("Acme", "Madam", "Pivot", "Pip"))
     2
     """
-    return ______
+    return reduce(
+        lambda x, y: x + y,
+        map(lambda word: int(word.lower() == word[::-1].lower()), L),
+    )
 
 
 def coords(fn, seq, lower, upper):
@@ -232,7 +264,7 @@ def coords(fn, seq, lower, upper):
     [[-2, 4], [1, 1], [3, 9]]
     """
     "*** YOUR CODE HERE ***"
-    return ______
+    return [[x, fn(x)] for x in seq if lower <= fn(x) <= upper]
 
 
 def change_abstraction(change):
