@@ -282,9 +282,15 @@ def report_progress(typed, prompt, user_id, upload):
     ID: 3 Progress: 0.2
     0.2
     """
-    # BEGIN PROBLEM 8
-    "*** YOUR CODE HERE ***"
-    # END PROBLEM 8
+    num_correct = 0
+    for i in range(len(typed)):
+        if typed[i] != prompt[i]:
+            break
+        num_correct += 1
+
+    progress = num_correct / len(prompt)
+    upload({"id": user_id, "progress": progress})
+    return progress
 
 
 def time_per_word(words, times_per_player):
