@@ -1,7 +1,8 @@
 """Typing test implementation"""
 
+from collections import defaultdict
 from typing import Callable, List
-from utils import lower, split, remove_punctuation, lines_from_file
+from utils import lower, split, remove_punctuation, lines_from_file, count
 from ucb import main, interact, trace
 from datetime import datetime
 
@@ -225,44 +226,23 @@ def minimum_mewtations(typed, source, limit):
     """
 
     def count_mutations(typed, source, diff):
-        # More than 1 base case will be needed
-        if (
-            diff > limit
-        ):  # Base cases should go here, you may add more base cases as needed.
+        if diff > limit:
             return limit + 1
         elif not typed:
-            return diff + len(source)
+            return len(source) + diff
         elif not source:
-            return diff + len(typed)
+            return len(typed) + diff
 
-        # Recursive cases should go below here
-        if typed[0] == source[0]:  # Feel free to remove or add additional cases
+        if typed[0] == source[0]:
             return count_mutations(typed[1:], source[1:], diff)
         else:
-            # calculate differences from each mutation
-            add = feline_fixes(source[0] + typed, source, limit)
-            remove = feline_fixes(typed[1:], source, limit)
-            substitute = feline_fixes(source[0] + typed[1:], source, limit)
-            # BEGIN
-            "*** YOUR CODE HERE ***"
-            # find the minimum
-            if add <= remove <= substitute:
-                # add
-                pass
-            elif remove <= add <= substitute:
-                # remove
-                pass
-            elif substitute <= add <= remove:
-                # sub
-                pass
-            # END
-        return diff
+            diff += 1
+            add = count_mutations(source[0] + typed, source, diff)
+            remove = count_mutations(typed[1:], source, diff)
+            replace = count_mutations(source[0] + typed[1:], source, diff)
+            return min(add, remove, replace)
 
     return count_mutations(typed, source, 0)
-
-
-big_limit = 10
-minimum_mewtations("ckiteus", "kittens", 10)
 
 
 def final_diff(typed, source, limit):
