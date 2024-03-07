@@ -310,9 +310,11 @@ def time_per_word(words, times_per_player):
     >>> get_all_times(match)
     [[6, 3, 6, 2], [10, 6, 1, 2]]
     """
-    # BEGIN PROBLEM 9
-    "*** YOUR CODE HERE ***"
-    # END PROBLEM 9
+    word_times = lambda player: [
+        player[i] - player[i - 1] for i in range(1, len(player))
+    ]
+
+    return match(words, [word_times(player) for player in times_per_player])
 
 
 def fastest_words(match):
