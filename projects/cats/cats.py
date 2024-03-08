@@ -93,8 +93,7 @@ def accuracy(typed, source):
     """
     typed_words = split(typed)
     source_words = split(source)
-    # BEGIN PROBLEM 3
-    "*** YOUR CODE HERE ***"
+
     if len(typed_words + source_words) == 0:
         return 100.0
     elif len(typed_words) == 0 or len(source_words) == 0:
@@ -105,8 +104,6 @@ def accuracy(typed, source):
         matches += typed_words[i] == source_words[i]
 
     return (matches / len(typed_words)) * 100
-
-    # END PROBLEM 3
 
 
 def wpm(typed, elapsed):
@@ -122,12 +119,9 @@ def wpm(typed, elapsed):
     2.0
     """
     assert elapsed > 0, "Elapsed time must be positive"
-    # BEGIN PROBLEM 4
-    "*** YOUR CODE HERE ***"
     num_words = len(typed) / 5
     minutes = elapsed / 60
     return num_words / minutes
-    # END PROBLEM 4
 
 
 ###########
@@ -153,21 +147,18 @@ def autocorrect(typed_word, word_list, diff_function, limit):
     >>> autocorrect("tosting", ["testing", "asking", "fasting"], first_diff, 10)
     'testing'
     """
-    # BEGIN PROBLEM 5
-    "*** YOUR CODE HERE ***"
+    if typed_word in word_list:
+        return typed_word
+
     min_diff = 999_999
     correct_word = typed_word
 
     for word in word_list:
-        if typed_word == word:
-            return typed_word
-
         difference = diff_function(typed_word, word, limit)
         if difference < min_diff and difference <= limit:
             min_diff = difference
             correct_word = word
     return correct_word
-    # END PROBLEM 5
 
 
 def feline_fixes(typed, source, limit):
