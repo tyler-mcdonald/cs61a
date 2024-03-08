@@ -66,3 +66,16 @@ def print_tree(t, indent=0):
     print("   " * indent + str(label(t)))
     for b in branches(t):
         print_tree(b, indent + 1)
+
+
+def count_paths(t, total):
+    """Return the number of paths in tree t that sum to total.
+    >>> t = tree(3, [tree(-1), tree(1, [tree(2, [tree(1)]), tree(3)]), tree(1, [tree(-1)])])
+    >>> count_paths(t, 3)
+    3
+    """
+    if label(t) == total:
+        found = 1
+    else:
+        found = 0
+    return found + sum([count_paths(b, total - label(t)) for b in branches(t)])
