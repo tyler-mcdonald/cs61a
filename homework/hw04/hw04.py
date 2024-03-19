@@ -164,7 +164,12 @@ def totals_tree(m):
     >>> check(HW_SOURCE_FILE, 'totals_tree', ['Index'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    if is_planet(m):
+        return tree(total_weight(m))
+    else:
+        return tree(
+            total_weight(m), [totals_tree(end(left(m))), totals_tree(end(right(m)))]
+        )
 
 
 def replace_loki_at_leaf(t, lokis_replacement):
