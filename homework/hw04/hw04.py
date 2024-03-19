@@ -124,7 +124,15 @@ def balanced(m):
     >>> check(HW_SOURCE_FILE, 'balanced', ['Index'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    if is_planet(m):
+        return True
+
+    torque = lambda arm: length(arm) * total_weight(end(arm))
+    return (
+        balanced(end(left(m)))
+        and balanced(end(right(m)))
+        and torque(left(m)) == torque(right(m))
+    )
 
 
 def totals_tree(m):
