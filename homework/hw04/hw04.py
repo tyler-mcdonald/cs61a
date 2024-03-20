@@ -238,7 +238,12 @@ def has_path(t, word):
     False
     """
     assert len(word) > 0, "no path for empty word."
-    "*** YOUR CODE HERE ***"
+
+    if label(t) != word[0]:
+        return False
+    elif len(word) > 1:
+        return any([has_path(b, word[1:]) for b in branches(t)])
+    return True
 
 
 def str_interval(x):
@@ -404,3 +409,10 @@ def copy_tree(t):
     5
     """
     return tree(label(t), [copy_tree(b) for b in branches(t)])
+
+
+greetings = tree(
+    "h", [tree("i"), tree("e", [tree("l", [tree("l", [tree("o")])]), tree("y")])]
+)
+
+has_path(greetings, "h")
