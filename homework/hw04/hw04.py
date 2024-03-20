@@ -1,4 +1,5 @@
 passphrase = "*** PASSPHRASE HERE ***"
+from operator import sub, mul
 
 
 def midsem_survey(p):
@@ -267,12 +268,12 @@ def interval(a, b):
 
 def lower_bound(x):
     """Return the lower bound of interval x."""
-    "*** YOUR CODE HERE ***"
+    return x[0]
 
 
 def upper_bound(x):
     """Return the upper bound of interval x."""
-    "*** YOUR CODE HERE ***"
+    return x[1]
 
 
 def str_interval(x):
@@ -291,24 +292,34 @@ def add_interval(x, y):
 def mul_interval(x, y):
     """Return the interval that contains the product of any value in x and any
     value in y."""
-    p1 = x[0] * y[0]
-    p2 = x[0] * y[1]
-    p3 = x[1] * y[0]
-    p4 = x[1] * y[1]
-    return [min(p1, p2, p3, p4), max(p1, p2, p3, p4)]
+    return interval_operation(mul, x, y)
 
 
 def sub_interval(x, y):
     """Return the interval that contains the difference between any value in x
     and any value in y."""
-    "*** YOUR CODE HERE ***"
+    return interval_operation(sub, x, y)
+
+
+def interval_operation(operation, x, y):
+    x_lower_bound, x_upper_bound = lower_bound(x), upper_bound(x)
+    y_lower_bound, y_upper_bound = lower_bound(y), upper_bound(y)
+
+    op1 = operation(x_lower_bound, y_lower_bound)
+    op2 = operation(x_lower_bound, y_upper_bound)
+    op3 = operation(x_upper_bound, y_lower_bound)
+    op4 = operation(x_upper_bound, y_upper_bound)
+
+    return interval(min(op1, op2, op3, op4), max(op1, op2, op3, op4))
 
 
 def div_interval(x, y):
     """Return the interval that contains the quotient of any value in x divided by
     any value in y. Division is implemented as the multiplication of x by the
     reciprocal of y."""
-    "*** YOUR CODE HERE ***"
+    if lower_bound(y) < 0:
+        assert upper_bound(y) < 0, "y interval must not span across 0."
+
     reciprocal_y = interval(1 / upper_bound(y), 1 / lower_bound(y))
     return mul_interval(x, reciprocal_y)
 
