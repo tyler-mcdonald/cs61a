@@ -201,7 +201,10 @@ def replace_loki_at_leaf(t, lokis_replacement):
     >>> laerad == yggdrasil # Make sure original tree is unmodified
     True
     """
-    "*** YOUR CODE HERE ***"
+    return tree(
+        lokis_replacement if is_leaf(t) and label(t) == "loki" else label(t),
+        [replace_loki_at_leaf(b, lokis_replacement) for b in branches(t)],
+    )
 
 
 def has_path(t, word):
